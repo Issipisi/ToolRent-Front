@@ -22,12 +22,15 @@ a:hover {
   color: #535bf2;
 }
 
+p{
+  text-align: justify;
+  max-width: 120ch;          /* ~65 caracteres por línea: lectura cómoda */
+  margin: 0 auto;           /* centrado horizontal */
+  line-height: 1.6;         /* espaciado entre líneas */
+}
+
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
