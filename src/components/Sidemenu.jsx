@@ -12,7 +12,8 @@ import CalculateIcon from "@mui/icons-material/Calculate";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import DiscountIcon from "@mui/icons-material/Discount";
 import HailIcon from "@mui/icons-material/Hail";
-import MedicationLiquidIcon from "@mui/icons-material/MedicationLiquid";
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -20,7 +21,6 @@ import { useEffect } from "react";
 export default function Sidemenu({ open, toggleDrawer }) {
   const navigate = useNavigate();
 
-  // Añade/quita inert en #root cuando el Drawer cambie
   useEffect(() => {
   const root = document.getElementById("root");
   if (root) root.inert = open;
@@ -55,36 +55,39 @@ export default function Sidemenu({ open, toggleDrawer }) {
           <ListItemText primary="Herramientas" />
         </ListItemButton>
 
-        <ListItemButton onClick={() => navigate("/paycheck/list")}>
+        <ListItemButton onClick={() => navigate("/loans")}>
+          <ListItemIcon>
+            <CreditScoreIcon />
+          </ListItemIcon>
+          <ListItemText primary="Préstamos" />
+        </ListItemButton>
+
+        <ListItemButton onClick={() => navigate("/returns")}>
           <ListItemIcon>
             <PaidIcon />
           </ListItemIcon>
-          <ListItemText primary="Planilla Sueldos" />
+          <ListItemText primary="Préstamo con multa " />
         </ListItemButton>
 
-        <ListItemButton onClick={() => navigate("/paycheck/calculate")}>
+        <ListItemButton onClick={() => navigate("/reports")}>
           <ListItemIcon>
-            <CalculateIcon />
+            <ReceiptLongIcon />
           </ListItemIcon>
-          <ListItemText primary="Calcular Planilla" />
+          <ListItemText primary="Reportes" />
         </ListItemButton>
-        <ListItemButton onClick={() => navigate("/reports/AnualReport")}>
+
+        <ListItemButton onClick={() => navigate("/kardex")}>
           <ListItemIcon>
             <AnalyticsIcon />
           </ListItemIcon>
-          <ListItemText primary="Gráficos Planillas" />
+          <ListItemText primary="Kárdex" />
         </ListItemButton>
       </List>
 
       <Divider />
 
       <List>
-        <ListItemButton onClick={() => navigate("/employee/discounts")}>
-          <ListItemIcon>
-            <DiscountIcon />
-          </ListItemIcon>
-          <ListItemText primary="Descuentos" />
-        </ListItemButton>
+
         <ListItemButton onClick={() => navigate("/paycheck/vacations")}>
           <ListItemIcon>
             <HailIcon />
@@ -93,7 +96,7 @@ export default function Sidemenu({ open, toggleDrawer }) {
         </ListItemButton>
         <ListItemButton onClick={() => navigate("/paycheck/medicalleave")}>
           <ListItemIcon>
-            <MedicationLiquidIcon />
+            <PaidIcon />
           </ListItemIcon>
           <ListItemText primary="Licencias Medicas" />
         </ListItemButton>

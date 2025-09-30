@@ -2,9 +2,13 @@ import './App.css'
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import Navbar from "./components/Navbar"
 import Home from './components/Home';
-import ToolView from './components/ToolView';
+import ToolGroupView from './components/ToolGroupView';
 import NotFound from './components/NotFound';
 import CustomerView from "./components/CustomerView";
+import LoanView from "./components/LoanView";
+import ReturnView from "./components/ReturnView";
+import KardexView from "./components/KardexView";
+import ReportView from "./components/ReportView";
 import { useKeycloak } from "@react-keycloak/web";
 
 function App() {
@@ -45,11 +49,31 @@ function App() {
         />
 
         <Route
-          path="/tools/*"
-          element={ <PrivateRoute element={<ToolView />} rolesAllowed={["ADMIN"]}/>}
+          path="/tools"
+          element={<PrivateRoute element={<ToolGroupView />} rolesAllowed={["ADMIN"]} />}
         />
 
-          <Route path="*" element={<NotFound />} />
+        <Route 
+          path="/loans" 
+          element={<PrivateRoute element={<LoanView />} rolesAllowed={["ADMIN","EMPLOYEE"]} />} 
+        />
+
+        <Route 
+          path="/returns" 
+          element={<PrivateRoute element={<ReturnView />} rolesAllowed={["ADMIN","EMPLOYEE"]} />} 
+        />
+
+        <Route
+          path="/kardex"
+          element={<PrivateRoute element={<KardexView />} rolesAllowed={["ADMIN"]} />}
+        />
+
+        <Route
+          path="/reports"
+          element={<PrivateRoute element={<ReportView />} rolesAllowed={["ADMIN","EMPLOYEE"]} />}
+        />
+
+        <Route path="*" element={<NotFound />} />
         </Routes>
 
       </div>

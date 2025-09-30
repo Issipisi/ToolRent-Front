@@ -16,4 +16,6 @@ const changeStatus = (id, newStatus) => {
   });
 };
 
-export default { getAll, register, changeStatus };
+const getActive = () => api.get("/customers/active"); 
+
+export default { getAll, register, changeStatus, getActive };
