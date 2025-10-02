@@ -18,4 +18,7 @@ const changeStatus = (id, newStatus) => {
 
 const getActive = () => api.get("/customers/active"); 
 
-export default { getAll, register, changeStatus, getActive };
+const payDebt = (customerId, amount) =>
+  api.put(`/customers/${customerId}/pay-debt`, null, { params: { amount } });
+
+export default { getAll, register, changeStatus, payDebt, getActive };

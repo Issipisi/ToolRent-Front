@@ -5,7 +5,7 @@ import toolGroupService from "../services/toolGroup.service";
 import {
   Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Dialog, DialogTitle, DialogContent, DialogActions, TextField, Typography,
-  MenuItem, Stack
+  MenuItem,
 } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -49,11 +49,8 @@ const LoanView = () => {
 
   /* ---- handlers ---- */
   const handleRegister = async () => {
-    await loanService.register(
-      form.toolGroupId,
-      form.customerId,
-      form.dueDate.toISOString() 
-    );
+    await loanService.register( form.toolGroupId, form.customerId,
+    form.dueDate.toISOString() );
     setOpen(false);
     setForm({ customerId: "", toolGroupId: "", dueDate: dayjs() });
     loadLoans();
@@ -77,7 +74,6 @@ const LoanView = () => {
         Registrar Préstamo
       </Button>
 
-      {/*  tabla igual que antes  */}
       <TableContainer>
         <Table>
           <TableHead sx={{ background: "#f5f0ff" }}>
@@ -143,7 +139,7 @@ const LoanView = () => {
         >
         {tools.map((t) => (
             <MenuItem key={t.id} value={t.id}>
-            {t.name} ({t.category}) ‑ stock: {t.units.length}
+            {t.name} ({t.category})
             </MenuItem>
         ))}
         </TextField>

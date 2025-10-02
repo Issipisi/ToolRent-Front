@@ -70,7 +70,7 @@ const KardexView = () => {
         {/* Filtro por herramienta (RF5.2) */}
         <TextField
           select
-          label="Filter by Tool"
+          label="Filtro por Herramienta"
           value={selectedTool}
           onChange={(e) => setSelectedTool(e.target.value)}
           sx={{ minWidth: 220 }}
@@ -87,13 +87,13 @@ const KardexView = () => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Stack direction="row" spacing={1}>
             <DatePicker
-              label="From"
+              label="Desde"
               value={from}
               onChange={(newVal) => setFrom(newVal ?? dayjs())}
               renderInput={(params) => <TextField {...params} />}
             />
             <DatePicker
-              label="To"
+              label="Hasta"
               value={to}
               onChange={(newVal) => setTo(newVal ?? dayjs())}
               renderInput={(params) => <TextField {...params} />}
@@ -102,8 +102,8 @@ const KardexView = () => {
         </LocalizationProvider>
 
         {/* Botones */}
-        <Button variant="outlined" onClick={filterByTool}>Filter Tool</Button>
-        <Button variant="outlined" onClick={filterByRange}>Filter Range</Button>
+        <Button variant="outlined" onClick={filterByTool}>Filtro x Herramienta</Button>
+        <Button variant="outlined" onClick={filterByRange}>Filtro x Fechas</Button>
         <Button variant="outlined" onClick={clearFilters}>Clear</Button>
       </Stack>
 
@@ -113,11 +113,11 @@ const KardexView = () => {
           <TableHead sx={{ background: "#f5f0ff" }}>
             <TableRow>
               <TableCell sx={{ color: "#2e2e4e" }}>ID</TableCell>
-              <TableCell sx={{ color: "#2e2e4e" }}>Date</TableCell>
-              <TableCell sx={{ color: "#2e2e4e" }}>Type</TableCell>
-              <TableCell sx={{ color: "#2e2e4e" }}>Tool</TableCell>
-              <TableCell sx={{ color: "#2e2e4e" }}>Customer</TableCell>
-              <TableCell sx={{ color: "#2e2e4e" }}>Details</TableCell>
+              <TableCell sx={{ color: "#2e2e4e" }}>Fecha</TableCell>
+              <TableCell sx={{ color: "#2e2e4e" }}>Tipo</TableCell>
+              <TableCell sx={{ color: "#2e2e4e" }}>Herramienta</TableCell>
+              <TableCell sx={{ color: "#2e2e4e" }}>Cliente</TableCell>
+              <TableCell sx={{ color: "#2e2e4e" }}>Detalles</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

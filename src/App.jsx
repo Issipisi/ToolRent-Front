@@ -2,14 +2,16 @@ import './App.css'
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import Navbar from "./components/Navbar"
 import Home from './components/Home';
+import ToolUnitView from './components/ToolUnitView';
 import ToolGroupView from './components/ToolGroupView';
 import NotFound from './components/NotFound';
 import CustomerView from "./components/CustomerView";
 import LoanView from "./components/LoanView";
-import ReturnView from "./components/ReturnView";
+import TariffView from "./components/TariffView";
 import KardexView from "./components/KardexView";
 import ReportView from "./components/ReportView";
 import { useKeycloak } from "@react-keycloak/web";
+
 
 function App() {
   const { keycloak, initialized } = useKeycloak();
@@ -54,13 +56,18 @@ function App() {
         />
 
         <Route 
+          path="/tools/units" 
+          element={<PrivateRoute element={<ToolUnitView />} rolesAllowed={["ADMIN"]} />} 
+        />
+
+        <Route 
           path="/loans" 
           element={<PrivateRoute element={<LoanView />} rolesAllowed={["ADMIN","EMPLOYEE"]} />} 
         />
 
         <Route 
-          path="/returns" 
-          element={<PrivateRoute element={<ReturnView />} rolesAllowed={["ADMIN","EMPLOYEE"]} />} 
+          path="/tariff" 
+          element={<PrivateRoute element={<TariffView />} rolesAllowed={["ADMIN"]} />} 
         />
 
         <Route

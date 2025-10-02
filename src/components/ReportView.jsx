@@ -33,13 +33,13 @@ const ReportView = () => {
       to.format('YYYY-MM-DD')
     );
     setData(res.data);
-    setTitle("Active Loans");
+    setTitle("Préstamos Activos");
   };
 
   const loadOverdue = async () => {
     const res = await reportService.overdueCustomers();
     setData(res.data);
-    setTitle("Customers with Overdue Loans");
+    setTitle("Clientes con deudas");
   };
 
   const loadTop = async () => {
@@ -48,7 +48,7 @@ const ReportView = () => {
       to.format('YYYY-MM-DD')
     );
     setData(res.data);
-    setTitle("Most Loaned Tools");
+    setTitle("Herramientas más solicitadas");
   };
 
   /* ---------- RENDER ---------- */
@@ -62,13 +62,13 @@ const ReportView = () => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
           <DatePicker
-            label="From"
+            label="Desde"
             value={from}
             onChange={(newVal) => setFrom(newVal ?? dayjs())}
             renderInput={(params) => <TextField {...params} />}
           />
           <DatePicker
-            label="To"
+            label="Hasta"
             value={to}
             onChange={(newVal) => setTo(newVal ?? dayjs())}
             renderInput={(params) => <TextField {...params} />}
@@ -89,28 +89,28 @@ const ReportView = () => {
             <Table>
               <TableHead sx={{ background: "#f5f0ff" }}>
                 <TableRow>
-                  {title === "Active Loans" && (
+                  {title === "Préstamos Activos" && (
                     <>
                       <TableCell sx={{ color: "#2e2e4e" }}>ID</TableCell>
-                      <TableCell sx={{ color: "#2e2e4e" }}>Customer</TableCell>
-                      <TableCell sx={{ color: "#2e2e4e" }}>Tool</TableCell>
-                      <TableCell sx={{ color: "#2e2e4e" }}>Loan Date</TableCell>
-                      <TableCell sx={{ color: "#2e2e4e" }}>Due Date</TableCell>
-                      <TableCell sx={{ color: "#2e2e4e" }}>Status</TableCell>
+                      <TableCell sx={{ color: "#2e2e4e" }}>Cliente</TableCell>
+                      <TableCell sx={{ color: "#2e2e4e" }}>Herramienta</TableCell>
+                      <TableCell sx={{ color: "#2e2e4e" }}>Fecha Préstamo</TableCell>
+                      <TableCell sx={{ color: "#2e2e4e" }}>Fecha Devolución</TableCell>
+                      <TableCell sx={{ color: "#2e2e4e" }}>Estado</TableCell>
                     </>
                   )}
-                  {title === "Customers with Overdue Loans" && (
+                  {title === "Clientes con deudas" && (
                     <>
                       <TableCell sx={{ color: "#2e2e4e" }}>ID</TableCell>
-                      <TableCell sx={{ color: "#2e2e4e" }}>Name</TableCell>
+                      <TableCell sx={{ color: "#2e2e4e" }}>Nombre</TableCell>
                       <TableCell sx={{ color: "#2e2e4e" }}>RUT</TableCell>
                       <TableCell sx={{ color: "#2e2e4e" }}>Email</TableCell>
                     </>
                   )}
-                  {title === "Most Loaned Tools" && (
+                  {title === "Herramientas más solicitadas" && (
                     <>
-                      <TableCell sx={{ color: "#2e2e4e" }}>Tool</TableCell>
-                      <TableCell sx={{ color: "#2e2e4e" }}>Times Loaned</TableCell>
+                      <TableCell sx={{ color: "#2e2e4e" }}>Herramienta</TableCell>
+                      <TableCell sx={{ color: "#2e2e4e" }}>N° solicitudes</TableCell>
                     </>
                   )}
                 </TableRow>
@@ -118,7 +118,7 @@ const ReportView = () => {
               <TableBody>
                 {data.map((row, idx) => (
                   <TableRow key={idx} hover sx={{ "&:hover": { background: "#f5f0ff" } }}>
-                    {title === "Active Loans" && (
+                    {title === "Préstamos Activos" && (
                       <>
                         <TableCell>{row.id}</TableCell>
                         <TableCell>{row.customer?.name ?? ''}</TableCell>
@@ -128,7 +128,7 @@ const ReportView = () => {
                         <TableCell>{row.status ?? 'ACTIVE'}</TableCell>
                       </>
                     )}
-                    {title === "Customers with Overdue Loans" && (
+                    {title === "Clientes con deudas" && (
                       <>
                         <TableCell>{row.id}</TableCell>
                         <TableCell>{row.name}</TableCell>
@@ -136,7 +136,7 @@ const ReportView = () => {
                         <TableCell>{row.email}</TableCell>
                       </>
                     )}
-                    {title === "Most Loaned Tools" && (
+                    {title === "Herramientas más solicitadas" && (
                       <>
                         <TableCell>{row.toolGroupName}</TableCell>
                         <TableCell>{row.total}</TableCell>

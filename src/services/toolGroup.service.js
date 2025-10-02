@@ -9,5 +9,9 @@ const register = (name, category, replacementValue, pricePerDay, stock) =>
 
 const getAvailable = () => api.get("/tools/available");
 
-export default { getAll, register, getAvailable }; 
+const updateTariff = (toolGroupId, dailyRentalRate, dailyFineRate) =>
+  api.put(`/tools/${toolGroupId}/tariff`, null, {
+    params: { dailyRentalRate, dailyFineRate },
+  });
 
+export default { getAll, register, updateTariff, getAvailable };

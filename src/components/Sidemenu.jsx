@@ -8,9 +8,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import PaidIcon from "@mui/icons-material/Paid";
-import CalculateIcon from "@mui/icons-material/Calculate";
+import BuildIcon from '@mui/icons-material/Build';
 import AnalyticsIcon from "@mui/icons-material/Analytics";
-import DiscountIcon from "@mui/icons-material/Discount";
 import HailIcon from "@mui/icons-material/Hail";
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -55,6 +54,13 @@ export default function Sidemenu({ open, toggleDrawer }) {
           <ListItemText primary="Herramientas" />
         </ListItemButton>
 
+        <ListItemButton onClick={() => navigate("/tools/units")}>
+          <ListItemIcon>
+            <BuildIcon />
+          </ListItemIcon>
+          <ListItemText primary="Tool Unit" />
+        </ListItemButton>
+
         <ListItemButton onClick={() => navigate("/loans")}>
           <ListItemIcon>
             <CreditScoreIcon />
@@ -62,11 +68,11 @@ export default function Sidemenu({ open, toggleDrawer }) {
           <ListItemText primary="Préstamos" />
         </ListItemButton>
 
-        <ListItemButton onClick={() => navigate("/returns")}>
+        <ListItemButton onClick={() => navigate("/tariff")}>
           <ListItemIcon>
             <PaidIcon />
           </ListItemIcon>
-          <ListItemText primary="Préstamo con multa " />
+          <ListItemText primary="Tarifas " />
         </ListItemButton>
 
         <ListItemButton onClick={() => navigate("/reports")}>
@@ -88,12 +94,7 @@ export default function Sidemenu({ open, toggleDrawer }) {
 
       <List>
 
-        <ListItemButton onClick={() => navigate("/paycheck/vacations")}>
-          <ListItemIcon>
-            <HailIcon />
-          </ListItemIcon>
-          <ListItemText primary="Vacaciones" />
-        </ListItemButton>
+       
         <ListItemButton onClick={() => navigate("/paycheck/medicalleave")}>
           <ListItemIcon>
             <PaidIcon />
