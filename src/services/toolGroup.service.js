@@ -14,4 +14,10 @@ const updateTariff = (toolGroupId, dailyRentalRate, dailyFineRate) =>
     params: { dailyRentalRate, dailyFineRate },
   });
 
-export default { getAll, register, updateTariff, getAvailable };
+const updateReplacementValue = (toolGroupId, replacementValue) =>
+  api.put(`/tools/${toolGroupId}/replacement-value`, null, {
+    params: { replacementValue }
+  });
+
+
+export default { getAll, register, getAvailable, updateTariff, updateReplacementValue};

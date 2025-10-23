@@ -1,20 +1,30 @@
-import dayjs from "dayjs";
 import api from "../http-common";
-
-const getActive = () => {
-  const from = dayjs().subtract(1, 'month').toISOString();
-  const to   = dayjs().add(1, 'month').toISOString();
-  return api.get("/loans/active", {
-    params: { from, to }
-  });
-};
 
 const register = (toolGroupId, customerId, dueDate) =>
   api.post("/loans", null, {
     params: { toolGroupId, customerId, dueDate },
   });
 
-const returnLoan = (loanId) =>
-  api.put(`/loans/${loanId}/return`);
+const getActive = (from, to) =>
+  api.get("/loans/active", { params: { from, to } });
 
-export default { getActive, register, returnLoan};
+const returnLoan = (loanId, damageCharge = 0.0, irreparable = false) =>
+  api.put(`/loans/${loanId}/return`, null, {
+    params: { damageCharge, irreparable }
+  });
+
+const applyDamage = (loanId, amount, irreparable = false) =>
+  api.put(`/loans/${loanId}/damage`, null, {
+    params: { amount, irreparable }
+  });
+
+const payDebts = (loanId) =>
+  api.put(`/loans/${loanId}/pay-debts`);
+
+const getReturnedWithDebts = () => 
+  api.get("/loans/returned-with-debts");
+
+const getPendingPayment = () =>
+  api.get("/loans/pending-payment");
+
+export default { register, getActive, returnLoan, applyDamage, payDebts, getReturnedWithDebts, getPendingPayment};

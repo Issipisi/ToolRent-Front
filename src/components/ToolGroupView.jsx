@@ -57,7 +57,7 @@ const ToolGroupView = () => {
                 <TableCell>{g.category}</TableCell>
                 <TableCell>{g.replacementValue}</TableCell>
                 <TableCell>{g.tariff?.dailyRentalRate}</TableCell>
-                <TableCell>{g.units.filter(u => u.status !== "RETIRED").length}</TableCell>
+                <TableCell>{g.units.filter(u => u.status === "AVAILABLE").length}</TableCell>
               </TableRow>
             ))}
           </TableBody>

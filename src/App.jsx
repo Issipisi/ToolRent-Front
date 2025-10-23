@@ -1,5 +1,5 @@
 import './App.css'
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom'
 import Navbar from "./components/Navbar"
 import Home from './components/Home';
 import ToolUnitView from './components/ToolUnitView';
@@ -42,6 +42,7 @@ function App() {
       <div className="container">
         <Navbar />
         <Routes>
+          <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />
 
           {/* Solo ADMIN puede ver clientes */}

@@ -1,17 +1,7 @@
 import { useState } from "react";
 import reportService from "../services/report.service";
 import {
-  Button,
-  Paper,
-  Table,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Typography,
-  Stack,
-  TextField,
+  Button, Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Typography, Stack, TextField,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -28,27 +18,37 @@ const ReportView = () => {
 
   /* ---------- LLAMADAS ---------- */
   const loadActive = async () => {
-    const res = await reportService.activeLoans(
-      from.format('YYYY-MM-DD'),
-      to.format('YYYY-MM-DD')
-    );
-    setData(res.data);
-    setTitle("Préstamos Activos");
-  };
-
-  const loadOverdue = async () => {
-    const res = await reportService.overdueCustomers();
-    setData(res.data);
-    setTitle("Clientes con deudas");
+    try {
+      const res = await reportService.activeLoans(
+        from.startOf('day').format('YYYY-MM-DDTHH:mm:ss'),
+        to.endOf('day').format('YYYY-MM-DDTHH:mm:ss')
+      );
+      setData(res.data);
+      setTitle("Préstamos Activos");
+    } catch (error) {
+      console.error('Error loading active loans:', error);
+      alert('Error al cargar préstamos activos');
+    }
   };
 
   const loadTop = async () => {
-    const res = await reportService.topTools(
-      from.format('YYYY-MM-DD'),
-      to.format('YYYY-MM-DD')
-    );
+    try {
+      const res = await reportService.topTools(
+        from.startOf('day').format('YYYY-MM-DDTHH:mm:ss'),
+        to.endOf('day').format('YYYY-MM-DDTHH:mm:ss')
+      );
+      setData(res.data);
+      setTitle("Herramientas más solicitadas");
+    } catch (error) {
+      console.error('Error loading top tools:', error);
+      alert('Error al cargar herramientas más solicitadas');
+    }
+  };
+
+  const loadCustomersWithDebt = async () => {
+    const res = await reportService.customersWithDebt();
     setData(res.data);
-    setTitle("Herramientas más solicitadas");
+    setTitle("Clientes con deudas");
   };
 
   /* ---------- RENDER ---------- */
@@ -78,7 +78,7 @@ const ReportView = () => {
 
       <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
         <Button variant="outlined" onClick={loadActive}>Préstamos Activos</Button>
-        <Button variant="outlined" onClick={loadOverdue}>Clientes con Deudas</Button>
+        <Button variant="outlined" onClick={loadCustomersWithDebt}>Clientes con Deudas</Button>
         <Button variant="outlined" onClick={loadTop}>Top Herramientas</Button>
       </Stack>
 
@@ -101,10 +101,13 @@ const ReportView = () => {
                   )}
                   {title === "Clientes con deudas" && (
                     <>
-                      <TableCell sx={{ color: "#2e2e4e" }}>ID</TableCell>
-                      <TableCell sx={{ color: "#2e2e4e" }}>Nombre</TableCell>
-                      <TableCell sx={{ color: "#2e2e4e" }}>RUT</TableCell>
-                      <TableCell sx={{ color: "#2e2e4e" }}>Email</TableCell>
+                      <TableCell>ID</TableCell>
+                      <TableCell>Nombre</TableCell>
+                      <TableCell>RUT</TableCell>
+                      <TableCell>Email</TableCell>
+                      <TableCell>Deuda ($)</TableCell>
+                      <TableCell>¿Atraso?</TableCell>
+                      <TableCell>Fecha más antigua</TableCell>
                     </>
                   )}
                   {title === "Herramientas más solicitadas" && (
@@ -121,19 +124,22 @@ const ReportView = () => {
                     {title === "Préstamos Activos" && (
                       <>
                         <TableCell>{row.id}</TableCell>
-                        <TableCell>{row.customer?.name ?? ''}</TableCell>
-                        <TableCell>{row.toolUnit?.toolGroup?.name ?? ''}</TableCell>
+                        <TableCell>{row.customerName}</TableCell>
+                        <TableCell>{row.toolName}</TableCell>
                         <TableCell>{row.loanDate}</TableCell>
                         <TableCell>{row.dueDate}</TableCell>
-                        <TableCell>{row.status ?? 'ACTIVE'}</TableCell>
+                        <TableCell>{row.status}</TableCell>
                       </>
                     )}
                     {title === "Clientes con deudas" && (
                       <>
-                        <TableCell>{row.id}</TableCell>
+                        <TableCell>{row.customerId}</TableCell>
                         <TableCell>{row.name}</TableCell>
                         <TableCell>{row.rut}</TableCell>
                         <TableCell>{row.email}</TableCell>
+                        <TableCell>{row.totalDebt}</TableCell>
+                        <TableCell>{row.hasOverdueLoan ? "Sí" : "No"}</TableCell>
+                        <TableCell>{row.oldestDueDate ? dayjs(row.oldestDueDate).format("DD-MM-YYYY") : "-"}</TableCell>
                       </>
                     )}
                     {title === "Herramientas más solicitadas" && (
