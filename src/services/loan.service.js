@@ -27,4 +27,10 @@ const getReturnedWithDebts = () =>
 const getPendingPayment = () =>
   api.get("/loans/pending-payment");
 
-export default { register, getActive, returnLoan, applyDamage, payDebts, getReturnedWithDebts, getPendingPayment};
+const sendToRepair = (unitId) =>
+  api.put(`/tools/units/${unitId}/repair-resolution`, null, {
+    params: { retire: false }
+  });
+
+export default { register, getActive, returnLoan, applyDamage, payDebts, 
+  getReturnedWithDebts, getPendingPayment, sendToRepair};

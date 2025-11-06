@@ -9,14 +9,13 @@ import Sidemenu from "./Sidemenu";
 import { useState } from "react";
 import { useKeycloak } from "@react-keycloak/web";
 
-export default function Navbar() {
+export default function Navbar({ userRole }) {
   const [open, setOpen] = useState(false);
   const { keycloak, initialized } = useKeycloak();
 
-
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-        return;
+      return;
     }
     setOpen(open);
   };
@@ -62,7 +61,8 @@ export default function Navbar() {
         </Toolbar>
       </AppBar>
 
-      <Sidemenu open={open} toggleDrawer={toggleDrawer}></Sidemenu>
+      {/* Pasamos el rol al menú lateral */}
+      <Sidemenu open={open} toggleDrawer={toggleDrawer} userRole={userRole} />
     </Box>
   );
 }

@@ -17,4 +17,7 @@ const resolveRepair = (unitId, retire) =>
     params: { retire }
   });
 
-export default { getAllWithDetails, changeStatus, resolveRepair };
+const retireFromRepair = (unitId) =>
+  api.put(`/tools/units/${unitId}/retire-from-repair`);
+
+export default { getAllWithDetails, changeStatus, resolveRepair, retireFromRepair };

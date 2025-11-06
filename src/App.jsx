@@ -17,30 +17,26 @@ function App() {
   const { keycloak, initialized } = useKeycloak();
 
   if (!initialized) return <div>Cargando...</div>;
+  if (!keycloak.authenticated) {
+    keycloak.login();
+    return null;
+  }
 
-  const isLoggedIn = keycloak.authenticated;
+  // ---- rol del usuario ----
   const roles = keycloak.tokenParsed?.realm_access?.roles || [];
+  const userRole = roles.includes("ADMIN") ? "ADMIN" : roles.includes("EMPLOYEE") ? "EMPLOYEE" : null;
 
   const PrivateRoute = ({ element, rolesAllowed }) => {
-    if (!isLoggedIn) {
-      keycloak.login();
-      return null;
-    }
-    if (rolesAllowed && !rolesAllowed.some(r => roles.includes(r))) {
+    if (!rolesAllowed.some(r => roles.includes(r))) {
       return <h2>No tienes permiso para ver esta página</h2>;
     }
     return element;
-  };
-
-  if (!isLoggedIn) { 
-    keycloak.login(); 
-    return null; 
-  }  
+  }; 
 
   return (
     <Router>
       <div className="container">
-        <Navbar />
+        <Navbar userRole={userRole} />
         <Routes>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />

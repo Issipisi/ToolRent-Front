@@ -55,6 +55,15 @@ const LoanView = () => {
     loadPendingPayment();
     loadCustomers();
     loadTools();
+
+    // ➜ Escucha cuando ToolUnitView retire una unidad
+    const handleDebtUpdate = () => {
+      loadPendingPayment(); // recarga solo deudas
+    };
+    window.addEventListener("debtUpdated", handleDebtUpdate);
+
+    // Limpieza al desmontar
+    return () => window.removeEventListener("debtUpdated", handleDebtUpdate);
   }, []);
 
   /* ---------- HANDLERS ---------- */
@@ -98,7 +107,19 @@ const LoanView = () => {
     const loanId = sessionStorage.getItem("pendingReturnId");
     const amount = preIrreparable ? 0 : parseFloat(preDamageAmount);
     try {
+      // 1. Registrar devolución
       await loanService.returnLoan(loanId, amount, preIrreparable);
+
+      // 2. Si hay daño leve → mandar directamente a reparación
+      if (preDamageType === "leve" && amount > 0) {
+        // Buscamos el préstamo para obtener el toolUnitId
+        const loanRes = await loanService.getActive();
+        const loan = loanRes.data.find(l => l.id == loanId);
+        if (loan?.toolUnitId) {
+          await loanService.sendToRepair(loan.toolUnitId);
+        }
+      }
+
       alert("Devolución registrada");
       setOpenPreReturn(false);
       setPreDamageAmount("0");
@@ -213,7 +234,13 @@ const LoanView = () => {
         <DialogTitle sx={{ background: "#f5f0ff", color: "#6c63ff" }}>Nuevo Préstamo</DialogTitle>
         <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 2 }}>
           <TextField select label="Cliente" value={form.customerId} onChange={(e) => setForm({ ...form, customerId: e.target.value })} fullWidth>
-            {customers.map((c) => (<MenuItem key={c.id} value={c.id}>{c.name} ‑ {c.rut}</MenuItem>))}
+            {customers
+              .filter((c) => c.name !== "Sistema") // ← excluye al usuario sistema
+              .map((c) => (
+                <MenuItem key={c.id} value={c.id}>
+                  {c.name} ‑ {c.rut}
+                </MenuItem>
+              ))}
           </TextField>
           <TextField select label="Grupo de Herramientas" value={form.toolGroupId} onChange={(e) => setForm({ ...form, toolGroupId: e.target.value })} fullWidth>
             {tools.map((t) => (<MenuItem key={t.id} value={t.id}>{t.name} ({t.category})</MenuItem>))}

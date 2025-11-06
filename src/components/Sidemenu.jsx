@@ -17,97 +17,90 @@ import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-export default function Sidemenu({ open, toggleDrawer }) {
+const employeeAllowed = ["/home", "/loans", "/reports"]; // rutas visibles para EMPLOYEE
+
+export default function Sidemenu({ open, toggleDrawer, userRole }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-  const root = document.getElementById("root");
-  if (root) root.inert = open;
-}, [open]);
+    const root = document.getElementById("root");
+    if (root) root.inert = open;
+  }, [open]);
+
+  // decide si un item se muestra
+  const canShow = (path) => {
+    if (userRole === "ADMIN") return true;
+    return employeeAllowed.includes(path);
+  };
 
   const listOptions = () => (
-    <Box
-      role="presentation"
-      onClick={toggleDrawer(false)}
-    >
+    <Box role="presentation" onClick={toggleDrawer(false)}>
       <List>
-        <ListItemButton onClick={() => navigate("/home")}>
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItemButton>
+        {canShow("/home") && (
+          <>
+            <ListItemButton onClick={() => navigate("/home")}>
+              <ListItemIcon><HomeIcon /></ListItemIcon>
+              <ListItemText primary="Home" />
+            </ListItemButton>
+            <Divider />
+          </>
+        )}
 
-        <Divider />
+        {canShow("/customers") && (
+          <ListItemButton onClick={() => navigate("/customers")}>
+            <ListItemIcon><PeopleAltIcon /></ListItemIcon>
+            <ListItemText primary="Clientes" />
+          </ListItemButton>
+        )}
 
-        <ListItemButton onClick={() => navigate("/customers")}>
-          <ListItemIcon>
-            <PeopleAltIcon />
-          </ListItemIcon>
-          <ListItemText primary="Clientes" />
-        </ListItemButton>
+        {canShow("/tools") && (
+          <ListItemButton onClick={() => navigate("/tools")}>
+            <ListItemIcon><HandymanIcon /></ListItemIcon>
+            <ListItemText primary="Herramientas" />
+          </ListItemButton>
+        )}
 
-        <ListItemButton onClick={() => navigate("/tools")}>
-          <ListItemIcon>
-            <HandymanIcon />
-          </ListItemIcon>
-          <ListItemText primary="Herramientas" />
-        </ListItemButton>
+        {canShow("/tools/units") && (
+          <ListItemButton onClick={() => navigate("/tools/units")}>
+            <ListItemIcon><BuildIcon /></ListItemIcon>
+            <ListItemText primary="Tool Unit" />
+          </ListItemButton>
+        )}
 
-        <ListItemButton onClick={() => navigate("/tools/units")}>
-          <ListItemIcon>
-            <BuildIcon />
-          </ListItemIcon>
-          <ListItemText primary="Tool Unit" />
-        </ListItemButton>
+        {canShow("/loans") && (
+          <ListItemButton onClick={() => navigate("/loans")}>
+            <ListItemIcon><CreditScoreIcon /></ListItemIcon>
+            <ListItemText primary="Préstamos" />
+          </ListItemButton>
+        )}
 
-        <ListItemButton onClick={() => navigate("/loans")}>
-          <ListItemIcon>
-            <CreditScoreIcon />
-          </ListItemIcon>
-          <ListItemText primary="Préstamos" />
-        </ListItemButton>
+        {canShow("/tariff") && (
+          <ListItemButton onClick={() => navigate("/tariff")}>
+            <ListItemIcon><PaidIcon /></ListItemIcon>
+            <ListItemText primary="Tarifas" />
+          </ListItemButton>
+        )}
 
-        <ListItemButton onClick={() => navigate("/tariff")}>
-          <ListItemIcon>
-            <PaidIcon />
-          </ListItemIcon>
-          <ListItemText primary="Tarifas " />
-        </ListItemButton>
+        {canShow("/reports") && (
+          <ListItemButton onClick={() => navigate("/reports")}>
+            <ListItemIcon><ReceiptLongIcon /></ListItemIcon>
+            <ListItemText primary="Reportes" />
+          </ListItemButton>
+        )}
 
-        <ListItemButton onClick={() => navigate("/reports")}>
-          <ListItemIcon>
-            <ReceiptLongIcon />
-          </ListItemIcon>
-          <ListItemText primary="Reportes" />
-        </ListItemButton>
-
-        <ListItemButton onClick={() => navigate("/kardex")}>
-          <ListItemIcon>
-            <AnalyticsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Kárdex" />
-        </ListItemButton>
-      </List>
-
-      <Divider />
-
-      <List>
-
-       
-        <ListItemButton onClick={() => navigate("/paycheck/medicalleave")}>
-          <ListItemIcon>
-            <PaidIcon />
-          </ListItemIcon>
-          <ListItemText primary="Licencias Medicas" />
-        </ListItemButton>
+        {canShow("/kardex") && (
+          <ListItemButton onClick={() => navigate("/kardex")}>
+            <ListItemIcon><AnalyticsIcon /></ListItemIcon>
+            <ListItemText primary="Kárdex" />
+          </ListItemButton>
+        )}
       </List>
     </Box>
   );
 
   return (
-    <div>
-      <Drawer anchor="left" open={open} onClose={toggleDrawer(false)} >{listOptions()}</Drawer>
-    </div>
+    <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
+      {listOptions()}
+    </Drawer>
   );
 }
